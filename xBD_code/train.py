@@ -47,7 +47,7 @@ if model == "TUNet":
     print("snapshot_name ", snapshot_name, "with seg and cls headers and ce loss only on building")
     print("upsampling 1:3 with 50%")
     print("FIXED LOSS")
-    snap_to_load = 'BASE_UNet_Transformer_img1024_lossOrig_alldata'
+    snap_to_load = 'best_ckpt.pt'
 
 elif model == "BiT":
     print("BiT ....")
@@ -68,7 +68,7 @@ else:
 
 
 train_dirs = ['/kaggle/input/xbd-data/data/train']
-models_folder = 'weights'
+models_folder = '/kaggle/input/base_unet_transformer_img1024_lossorig_alldata/pytorch/default/1'
 
 input_shape = (1024,1024)
 crop_size = 1024
