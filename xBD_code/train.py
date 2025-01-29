@@ -442,31 +442,28 @@ if __name__ == '__main__':
 
 
     # load previous checkpoint if available
-    # snap_to_load = 'res34_loc_{}_1_best'.format(seed)
     print("=> loading checkpoint '{}'".format(snap_to_load))
     checkpoint = torch.load(path.join(models_folder, snap_to_load), map_location='cpu')
-    print("Checkpoint keys:", checkpoint.keys())  # Debugging
     
-    # Handle different checkpoint formats
-    if 'state_dict' in checkpoint:
-        loaded_dict = checkpoint['state_dict']
-        best_score = checkpoint.get('best_score', 0)  # Optional: Load other metadata
+    # Extract state dict (use correct key for your checkpoint)
+    if 'model_G_state_dict' in checkpoint:  # Change this to match your checkpoint's key
+        loaded_dict = checkpoint['model_G_state_dict']
     else:
-        loaded_dict = checkpoint  # Assume checkpoint is just the state_dict
-        best_score = 0  # Initialize fresh
-    sd = model.state_dict()
-    for k in model.state_dict():
-        k_ = 'module.'+ k
-        if k_ in loaded_dict and sd[k].size() == loaded_dict[k_].size():
-            sd[k] = loaded_dict[k_]
-        else:
-            print(k_, k, "failure")
-    loaded_dict = sd
-    model.load_state_dict(loaded_dict)
-    print("loaded checkpoint '{}' (epoch {}, best_score {})"
-            .format(snap_to_load, checkpoint['epoch'], checkpoint['best_score']))
+        loaded_dict = checkpoint
+    
+    # Remove DataParallel's 'module.' prefix from checkpoint keys
+    loaded_dict = {k.replace('module.', ''): v for k, v in loaded_dict.items()}
+    
+    # Load weights into model (with strict=False to ignore mismatched keys)
+    model.load_state_dict(loaded_dict, strict=False)
+    
+    # Get metadata (use correct keys from your checkpoint)
+    epoch = checkpoint.get('epoch_id', 'N/A')
+    best_score = checkpoint.get('best_val_acc', 'N/A')
+    
+    print("loaded checkpoint '{}' (epoch_id {}, best_val_acc {})"
+          .format(snap_to_load, epoch, best_score))
     del loaded_dict
-    del sd
     del checkpoint
 
     gc.collect()
