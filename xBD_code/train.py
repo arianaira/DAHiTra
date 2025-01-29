@@ -445,7 +445,15 @@ if __name__ == '__main__':
     # snap_to_load = 'res34_loc_{}_1_best'.format(seed)
     print("=> loading checkpoint '{}'".format(snap_to_load))
     checkpoint = torch.load(path.join(models_folder, snap_to_load), map_location='cpu')
-    loaded_dict = checkpoint['state_dict']
+    print("Checkpoint keys:", checkpoint.keys())  # Debugging
+    
+    # Handle different checkpoint formats
+    if 'state_dict' in checkpoint:
+        loaded_dict = checkpoint['state_dict']
+        best_score = checkpoint.get('best_score', 0)  # Optional: Load other metadata
+    else:
+        loaded_dict = checkpoint  # Assume checkpoint is just the state_dict
+        best_score = 0  # Initialize fresh
     sd = model.state_dict()
     for k in model.state_dict():
         k_ = 'module.'+ k
