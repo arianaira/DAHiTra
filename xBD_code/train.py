@@ -67,7 +67,7 @@ else:
     snap_to_load = 'res34_loc_0_1_best'
 
 
-train_dirs = ['../data/xbd/train']
+train_dirs = ['/kaggle/input/xbd-data/data/train']
 models_folder = 'weights'
 
 input_shape = (1024,1024)
