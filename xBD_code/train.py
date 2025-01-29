@@ -398,7 +398,7 @@ if __name__ == '__main__':
     AOI_files = []
     for fn in tqdm(all_files):
         fl = np.zeros((4,), dtype=bool)
-        msk1 = np.array(Image.open(fn.replace('/images/', '/masks/').replace('_pre_disaster', '_post_disaster')))
+        msk1 = np.array(Image.open(fn.replace('/images/', '/masks/').replace('_pre_disaster_target', '_post_disaster_target')))
         for c in range(1, 5):
             fl[c-1] = c in msk1
         file_classes.append(fl)
