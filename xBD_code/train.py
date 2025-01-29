@@ -446,23 +446,28 @@ if __name__ == '__main__':
     checkpoint = torch.load(path.join(models_folder, snap_to_load), map_location='cpu')
     
     # Extract state dict (use correct key for your checkpoint)
-    if 'model_G_state_dict' in checkpoint:  # Change this to match your checkpoint's key
+    if 'model_G_state_dict' in checkpoint:  # Verify this key matches your checkpoint
         loaded_dict = checkpoint['model_G_state_dict']
     else:
         loaded_dict = checkpoint
     
-    # Remove DataParallel's 'module.' prefix from checkpoint keys
-    loaded_dict = {k.replace('module.', ''): v for k, v in loaded_dict.items()}
+    # Remove DataParallel prefix and filter incompatible layers
+    filtered_dict = {k.replace('module.', ''): v for k, v in loaded_dict.items() 
+                     if "conv_pred" not in k}  # Skip problematic layer
     
-    # Load weights into model (with strict=False to ignore mismatched keys)
-    model.load_state_dict(loaded_dict, strict=False)
+    # Load compatible weights
+    model.load_state_dict(filtered_dict, strict=False)
     
-    # Get metadata (use correct keys from your checkpoint)
-    epoch = checkpoint.get('epoch_id', 'N/A')
-    best_score = checkpoint.get('best_val_acc', 'N/A')
+    # Initialize missing layers manually (if needed)
+    with torch.no_grad():
+        nn.init.kaiming_normal_(model.conv_pred.weight)  # Example initialization
     
-    print("loaded checkpoint '{}' (epoch_id {}, best_val_acc {})"
-          .format(snap_to_load, epoch, best_score))
+    # Get metadata
+    epoch = checkpoint.get('epoch_id', 0)
+    best_score = checkpoint.get('best_val_acc', 0)
+    
+    print("Partially loaded checkpoint '{}'".format(snap_to_load))
+    print("Note: conv_pred layer initialized randomly due to shape mismatch")
     del loaded_dict
     del checkpoint
 
