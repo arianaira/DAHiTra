@@ -67,7 +67,7 @@ else:
     snap_to_load = 'res34_loc_0_1_best'
 
 
-train_dirs = ['/kaggle/input/xbd-data/data/train']
+train_dirs = ['/kaggle/input/xbd-dataset/data/train']
 models_folder = '/kaggle/input/base_unet_transformer_img1024_lossorig_alldata/pytorch/default/1'
 
 input_shape = (1024,1024)
@@ -201,8 +201,8 @@ class ValData(Dataset):
 
         # msk_loc = cv2.imread(path.join(loc_folder, '{0}.png'.format(fn.split('/')[-1].replace('.png', '_part1.png'))), cv2.IMREAD_UNCHANGED) > (0.3*255)
 
-        msk0 = np.array(Image.open(fn.replace('/images/', '/masks/').replace('_pre_disaster', '_pre_disaster_target')))
-        lbl_msk1 = np.array(Image.open(fn.replace('/images/', '/masks/').replace('_pre_disaster', '_post_disaster_target')))
+        msk0 = np.array(Image.open(fn.replace('/images/', '/masks/')))
+        lbl_msk1 = np.array(Image.open(fn.replace('/images/', '/masks/').replace('_pre_disaster', '_post_disaster')))
         
         '''x0 = 512
             y0 = 512
