@@ -41,7 +41,7 @@ device = ('cuda' if torch.cuda.is_available() else 'cpu')
 
 if model == "TUNet":
     print("UNet Transformer")
-    model = BASE_Transformer_UNet(input_nc=6, output_nc=5, token_len=4, resnet_stages_num=4,
+    model = BASE_Transformer_UNet(input_nc=3, output_nc=5, token_len=4, resnet_stages_num=4,
                                with_pos='learned', with_decoder_pos='learned', enc_depth=1, dec_depth=8).to(device)
     snapshot_name = 'BASE_UNet_Transformer_img1024_lossOrig_alldata_2'
     print("snapshot_name ", snapshot_name, "with seg and cls headers and ce loss only on building")
