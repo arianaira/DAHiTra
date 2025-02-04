@@ -267,7 +267,7 @@ def validate(model, data_loader):
             msk_damage_pred = torch.sigmoid(out).cpu().numpy()[:, 1:, ...]
             
             for j in range(msks.shape[0]):
-                dices0.append(dice(msks[j, 0], msk_pred[j] > _thr))
+                dices0.append(dice(msks[j, 1], msk_pred[j] > _thr))
                 targ = lbl_msk[j][lbl_msk[j, 0] > 0]
                 pred = msk_damage_pred[j].argmax(axis=0)
                 pred = pred * (msk_pred[j] > _thr)
@@ -432,8 +432,8 @@ if __name__ == '__main__':
     # data loaders; optimizer and scheduler
     data_train = TrainData(train_idxs)
     val_train = ValData(val_idxs)
-    train_data_loader = DataLoader(data_train, batch_size=batch_size, num_workers=8, shuffle=True, pin_memory=False, drop_last=True)
-    val_data_loader = DataLoader(val_train, batch_size=val_batch_size, num_workers=8, shuffle=False, pin_memory=False)
+    train_data_loader = DataLoader(data_train, batch_size=batch_size, num_workers=4, shuffle=True, pin_memory=False, drop_last=True)
+    val_data_loader = DataLoader(val_train, batch_size=val_batch_size, num_workers=4, shuffle=False, pin_memory=False)
 
     discriminator = Discriminator().to(device)
     optimizer = AdamW(model.parameters(), lr=0.0001, weight_decay=1e-6)
