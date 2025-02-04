@@ -47,7 +47,7 @@ if model == "TUNet":
     print("snapshot_name ", snapshot_name, "with seg and cls headers and ce loss only on building")
     print("upsampling 1:3 with 50%")
     print("FIXED LOSS")
-    snap_to_load = 'best_ckpt.pt'
+    # snap_to_load = 'BASE_UNet_Transformer_img1024_lossOrig_alldata'
 
 elif model == "BiT":
     print("BiT ....")
@@ -442,36 +442,26 @@ if __name__ == '__main__':
 
 
     # load previous checkpoint if available
-    print("=> loading checkpoint '{}'".format(snap_to_load))
-    checkpoint = torch.load(path.join(models_folder, snap_to_load), map_location='cpu')
-    
-    # Extract state dict (use correct key for your checkpoint)
-    if 'model_G_state_dict' in checkpoint:  # Verify this key matches your checkpoint
-        loaded_dict = checkpoint['model_G_state_dict']
-    else:
-        loaded_dict = checkpoint
-    
-    # Remove DataParallel prefix and filter incompatible layers
-    filtered_dict = {k.replace('module.', ''): v for k, v in loaded_dict.items() 
-                     if "conv_pred" not in k}  # Skip problematic layer
-    
-    # Load compatible weights
-    model.load_state_dict(filtered_dict, strict=False)
-    
-    # Initialize missing layers manually (if needed)
-    with torch.no_grad():
-        nn.init.kaiming_normal_(model.conv_pred.weight)  # Example initialization
-    
-    # Get metadata
-    epoch = checkpoint.get('epoch_id', 0)
-    best_score = checkpoint.get('best_val_acc', 0)
-    
-    print("Partially loaded checkpoint '{}'".format(snap_to_load))
-    print("Note: conv_pred layer initialized randomly due to shape mismatch")
-    del loaded_dict
-    del checkpoint
+    # snap_to_load = 'res34_loc_{}_1_best'.format(seed)
+    # print("=> loading checkpoint '{}'".format(snap_to_load))
+    # checkpoint = torch.load(path.join(models_folder, snap_to_load), map_location='cpu')
+    # loaded_dict = checkpoint['state_dict']
+    # sd = model.state_dict()
+    # for k in model.state_dict():
+    #     k_ = 'module.'+ k
+    #     if k_ in loaded_dict and sd[k].size() == loaded_dict[k_].size():
+    #         sd[k] = loaded_dict[k_]
+    #     else:
+    #         print(k_, k, "failure")
+    # loaded_dict = sd
+    # model.load_state_dict(loaded_dict)
+    # print("loaded checkpoint '{}' (epoch {}, best_score {})"
+    #         .format(snap_to_load, checkpoint['epoch'], checkpoint['best_score']))
+    # del loaded_dict
+    # del sd
+    # del checkpoint
 
-    gc.collect()
+    # gc.collect()
     if device == 'cuda':
         model = nn.DataParallel(model).to(device)
 
@@ -486,4 +476,3 @@ if __name__ == '__main__':
 
     elapsed = timeit.default_timer() - t0
     print('Time: {:.3f} min'.format(elapsed / 60))
-
