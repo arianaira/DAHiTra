@@ -8,7 +8,13 @@ checkpoint_root=checkpoints
 # n_class=2
 # lr=0.001
 # lr_policy=linear
-
+# For xBD dataset:
+data_name=xBDataset 
+dataset=xBDatasetMulti
+loss=focal
+n_class=5
+lr=0.0002
+lr_policy=multistep
 img_size=1024
 batch_size=4
 
@@ -28,10 +34,4 @@ python /kaggle/working/DAHiTra/main_cd.py --img_size ${img_size} --checkpoint_ro
 #unet_coupled_trans_256
 #base_transformer_pos_s4_dd8
 
-# For xBD dataset:
-data_name=xBDataset 
-dataset=xBDatasetMulti
-loss=focal
-n_class=5
-lr=0.0002
-lr_policy=multistep
+
