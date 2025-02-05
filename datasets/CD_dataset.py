@@ -161,7 +161,7 @@ class xBDataset(data.Dataset):
         self.label_transform = label_transform
         self.split = split
 
-        train_dirs = ['../data/train'] # fix path!!
+        train_dirs = ['/kaggle/input/xbd-dataset/data/train/'] # fix path!!
         all_files = []
         for d in train_dirs:
             for f in sorted(os.listdir(os.path.join(d, 'images'))):
@@ -222,7 +222,7 @@ class xBDatasetMulti(data.Dataset):
         self.label_transform = label_transform
         self.split = split
 
-        train_dirs = ['../data/xbd/train'] # fix path!!
+        train_dirs = ['/kaggle/input/xbd-dataset/data/train'] # fix path!!
         all_files = []
         for d in train_dirs:
             for f in sorted(os.listdir(os.path.join(d, 'images'))):
