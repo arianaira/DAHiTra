@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 gpus=-1
-# checkpoint_root=checkpoints 
+checkpoint_root=checkpoints 
 # data_name=LEVIR
 # dataset=CDDataset
 # loss=ce
