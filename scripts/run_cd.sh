@@ -16,7 +16,7 @@ n_class=5
 lr=0.0002
 lr_policy=multistep
 img_size=1024
-batch_size=4
+batch_size=2
 
 max_epochs=200 
 net_G=base_transformer_pos_s4_dd8_o5
