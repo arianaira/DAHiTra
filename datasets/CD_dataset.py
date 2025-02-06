@@ -264,9 +264,9 @@ class xBDatasetMulti(data.Dataset):
         label = cv2.imread(fn.replace('/images/', '/masks/').replace('_pre_disaster', '_post_disaster'), cv2.IMREAD_UNCHANGED)
 
         if self.split == 'train':
-            [img, img_B], [label] = self.augm.transform([img, img_B], [label], to_tensor=self.to_tensor, is_train=True)
+            [img, img_B], [label] = self.augm.transform([img, img_B], [label], to_tensor=self.to_tensor)
         else:
-            [img, img_B], [label] = self.augm.transform([img, img_B], [label], to_tensor=self.to_tensor, is_train=False)
+            [img, img_B], [label] = self.augm.transform([img, img_B], [label], to_tensor=self.to_tensor)
 
         name = fn.split('/')[-1]
         return {'name': fn, 'A': img, 'B': img_B, 'L': label}
