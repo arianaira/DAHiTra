@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-gpus=-1
+gpus=0,1
 checkpoint_root=checkpoints 
 # data_name=LEVIR
 # dataset=CDDataset
