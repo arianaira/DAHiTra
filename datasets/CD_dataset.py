@@ -225,8 +225,9 @@ class xBDatasetMulti(data.Dataset):
         train_dirs = ['/kaggle/input/xbd-dataset/data/train/'] # fix path!!
         all_files = []
         for d in train_dirs:
-            for f in sorted(os.listdir(os.path.join(d, 'images'))):
-                if ('_pre_disaster.png' in f) and (('hurricane-harvey' in f) | ('hurricane-michael' in f) | ('mexico-earthquake' in f) | ('tuscaloosa-tornado' in f) | ('palu-tsunami' in     f)):
+            for f in sorted(os.listdir(os.path.join(d, 'images/'))):
+                if ('_pre_disaster.png' in f) :
+                    # and (('hurricane-harvey' in f) | ('hurricane-michael' in f) | ('mexico-earthquake' in f) | ('tuscaloosa-tornado' in f) | ('palu-tsunami' in     f))
                     all_files.append(os.path.join(d, 'images', f))
 
         # Upsampling
