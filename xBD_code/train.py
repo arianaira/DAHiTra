@@ -267,7 +267,7 @@ def validate(model, data_loader):
             msk_damage_pred = torch.sigmoid(out).cpu().numpy()[:, 1:, ...]
             
             for j in range(msks.shape[0]):
-                dices0.append(dice(msks[j, 1], msk_pred[j] > _thr))
+                dices0.append(dice(msks[j, 0], msk_pred[j] > _thr))
                 targ = lbl_msk[j][lbl_msk[j, 0] > 0]
                 pred = msk_damage_pred[j].argmax(axis=0)
                 pred = pred * (msk_pred[j] > _thr)
